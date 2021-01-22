@@ -15,6 +15,7 @@
 #include "delay.h"
 
 #include "boot.h"
+#include "ScreenShot.h"
 
 #include "Colors.h"
 #include "lcd.h"
@@ -46,6 +47,7 @@
 #include "HD44780_Simulator.h"
 #include "ui_draw.h"
 #include "touch_process.h"
+#include "serialConnection.h"
 #include "interfaceCmd.h"
 #include "coordinate.h"
 #include "ff.h"
@@ -63,11 +65,17 @@
 #include "MachineParameters.h"
 #include "FanControl.h"
 #include "SpeedControl.h"
+#include "BabystepControl.h"
+#include "ProbeOffsetControl.h"
+#include "ProbeHeightControl.h"
+#include "HomeOffsetControl.h"
+#include "CaseLightControl.h"
 
 #include "extend.h"
 #include "menu.h"
 #include "list_item.h"
 #include "list_widget.h"
+#include "common.h"
 #include "Popup.h"
 #include "Numpad.h"
 #include "Notification.h"
@@ -83,12 +91,13 @@
 #include "Printing.h"
 #include "More.h"
 #include "Speed.h"
-#include "BabyStep.h"
 #include "ledcolor.h"
 #include "Parametersetting.h"
 #include "NotificationMenu.h"
 
+#include "Babystep.h"
 #include "Extrude.h"
+#include "LoadUnload.h"
 #include "Fan.h"
 #include "SettingsMenu.h"
 #include "PrintingMenu.h"
@@ -96,13 +105,14 @@
 #include "MachineSettings.h"
 #include "FeatureSettings.h"
 #include "SendGcode.h"
-#include "leveling.h"
-#include "UBLSaveLoad.h"
+#include "Leveling.h"
+#include "BedLeveling.h"
+#include "MBL.h"
+#include "ABL.h"
 #include "BLTouch.h"
-#include "ProbeOffset.h"
+#include "Touchmi.h"
+#include "ZOffset.h"
 #include "PowerFailed.h"
-
-#include "Mode.h"
 
 #include "UnifiedMove.h"
 #include "UnifiedHeat.h"
@@ -112,6 +122,9 @@
 #include "Pid.h"
 #include "TuneExtruder.h"
 #include "ConnectionSettings.h"
+#include "MeshTuner.h"
+#include "MeshEditor.h"
+#include "CaseLight.h"
 
 #define MAX_MENU_DEPTH 10       // max sub menu depth
 typedef void (*FP_MENU)(void);

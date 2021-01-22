@@ -10,12 +10,13 @@ extern "C" {
 #include "includes.h"
 #include "ff.h"
 
-//after changing/adding/removing a keyword, change the CONFIG_FLASH_SIGN in Settings.h
+//after changing/adding/removing a keyword, change the CONFIG_FLASH_SIGN in Settings.h and PARA_SIGN in flashStore.c
 
 #define  LINE_MAX_CHAR 100
 #define CONFIG_FILE_PATH            "0:config.ini"
+#define LANG_FILE_PATH              "0:language.ini"
 
-#define CONFIG_UNIFIEDMENU          "unified_menu:"
+#define CONFIG_STATUS_SCREEN        "status_screen:"
 #define CONFIG_UART_BAUDRATE        "baudrate:"
 #define CONFIG_LANGUAGE             "language:"
 
@@ -27,6 +28,8 @@ extern "C" {
 #define CONFIG_SS_XYZ_BG_COLOR      "status_xyz_bg_color:"
 #define CONFIG_LIST_BORDER_COLOR    "list_border_color:"
 #define CONFIG_LIST_BUTTON_BG_COLOR "list_button_bg_color:"
+#define CONFIG_MESH_MIN_COLOR       "mesh_min_color:"
+#define CONFIG_MESH_MAX_COLOR       "mesh_max_color:"
 
 #define CONFIG_ROTATE_UI            "rotate_ui:"
 #define CONFIG_TERMINAL_ACK         "terminal_ack:"
@@ -55,9 +58,11 @@ extern "C" {
 #define CONFIG_FAN_MAX              "fan_max:"
 #define CONFIG_BUILD_MIN            "size_min:"
 #define CONFIG_BUILD_MAX            "size_max:"
-#define CONFIG_MOVE_SPEED           "move_speed:"
+#define CONFIG_XY_SPEED             "xy_speed:"
+#define CONFIG_Z_SPEED              "z_speed:"
 #define CONFIG_EXT_SPEED            "ext_speed:"
 #define CONFIG_AUTO_LEVEL           "auto_load_leveling:"
+#define CONFIG_TOUCHMI_SENSOR       "touchmi_sensor:"
 #define CONFIG_ONBOARD_SD           "onboard_sd_support:"
 #define CONFIG_M27_DELAY            "M27_refresh_time:"
 #define CONFIG_M27_KEEP_ON          "M27_always_active:"
@@ -71,6 +76,8 @@ extern "C" {
 #define CONFIG_LEVEL_Z_POS          "level_z_pos:"
 #define CONFIG_LEVEL_Z_RAISE        "level_z_raise:"
 #define CONFIG_LEVEL_FEEDRATE       "level_feedrate:"
+#define CONFIG_XY_OFFSET_PROBING    "xy_offset_probing:"
+#define CONFIG_Z_STEPPERS_ALIGNMENT "z_steppers_alignment:"
 #define CONFIG_PREHEAT_NAME_1       "preheat_name1:"
 #define CONFIG_PREHEAT_NAME_2       "preheat_name2:"
 #define CONFIG_PREHEAT_NAME_3       "preheat_name3:"
@@ -193,12 +200,19 @@ typedef enum
 
 
 bool getConfigFromFile(void);
+bool getLangFromFile(void);
+
+bool readConfigFile(const char * path, void (*lineParser)(), uint16_t maxLineLen);
+
 void parseConfigLine(void);
+void parseLangLine(void);
+
 void parseConfigKey(u16 index);
 void writeConfig(uint8_t* dataBytes, uint16_t numBytes, uint32_t addr, uint32_t maxSize);
 void saveConfig(void);
 void resetConfig(void);
-void drawProgressPage(void);
+
+void drawProgressPage(u8 * title);
 void drawProgress(void);
 void showError(CONFIG_STATS stat);
 
